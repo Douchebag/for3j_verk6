@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Reference VS Copy</title>
+</head>
+<body>
+
+  <script>
+    // start with strings, numbers and booleans
+	let age = 100;
+	let age2 = age;
+	console.log(age, age2);
+	age = 200; // breytir gildi age í 200
+	console.log(age, age2); // birtir 200, 100 því age2 fær gildi sitt frá upprunalega gildinu
+    
+	let name = 'Wes';
+	let name2 = name;
+	console.log(name, name2);
+	name = 'wesley';
+	console.log(name, name2);
+	
+	// Let's say we have an array
+    const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
+	
+    // and we want to make a copy of it.
+	const team = players;
+	
+    // You might think we can just do something like this:
+	//team[3] = 'Lux'; // ef þú uppfærir array sem er reference-að mun reference-aða array-ið líka uppfærast, ólíkt string og numbers
+	
+    // however what happens when we update that array?
+    // now here is the problem!
+    // oh no - we have edited the original array too!
+    // Why? It's because that is an array reference, not an array copy. They both point to the same array!
+    
+	// So, how do we fix this? We take a copy instead!
+	const team2 = players.slice(); // býr til alvöru copy sem hægt er að uppfæra án þess að hafa áhrif á upprunalega array-ið
+    
+	// one way
+    // or create a new array and concat the old one in
+	const team3 = [].concat(players); // býr till nýtt tómt array og concatenate-ar svo því sem er í players inní það
+    // or use the new ES6 Spread
+	const team4 = [...players]; // býr til nýtt array og setur það sem er í players inní það
+	team4[3] = 'heeee hawww'; // gildið breytist án þess að hafa áhrif á players
+	console.log(team4);
+	
+	const team5 = Array.from(players); // önnur leið til að búa til nýtt array sem hefur ekki áhrif á það sem það copy-aði upprunalega
+	
+    // now when we update it, the original one isn't changed
+    // The same thing goes for objects, let's say we have a person object
+    // with Objects
+    const person = {
+      name: 'Wes Bos',
+      age: 80
+    };
+	
+    // and think we make a copy:
+	//const captain = person; 
+	//captain.number = 99; // breytir captain og person
+	
+    // how do we take a copy instead?
+	// býr til nýtt object, svo segjir þú hvaða object það á að copy-a og síðan hverju þú villt breyta
+	const cap2 = Object.assign({}, person, { number: 99, age: 12 });
+	
+	console.log(cap2);
+	
+    // We will hopefully soon see the object ...spread
+	const cap3 = {...person}; // fer einungis eitt level deep
+	
+    // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+	const wes = {
+		name: 'Wes',
+		age: 100,
+		social: {
+			twitter: '@wesbos',
+			facebook: 'wesbos.developer'
+		}
+	};
+	
+	console.log(wes);
+	
+	const dev = Object.assign({}, wes); // býr til copy sem mun ekki reference-a en því þetta er bara 'one level deep' þá að breyta twitter eða facebook gildinu, sem er á seinna level-i hafa áhrif
+	
+	const dev2 = JSON.parse(JSON.stringify(wes)); // poor man's deep clone, ekki recommended en virkar þá að breyta gildi sem er á seinna depth án þess að hafa áhrif á upprunalega object
+	
+	
+  </script>
+
+</body>
+</html>
