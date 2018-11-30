@@ -134,9 +134,9 @@ for (let oneTag in tagged) {
       }
     }
     for(let oneImg of currentImgs) {
-      console.log(oneImg.dataset.tags);
+      //console.log(oneImg.dataset.tags);
       let splitTags = oneImg.dataset.tags.split(',');
-      console.log(splitTags);
+      //console.log(splitTags);
       if (splitTags.includes(oneTag) === true) {
         oneImg.style.display = '';
       } else {
